@@ -2,6 +2,12 @@
 	width: 700px;
 }
 
+#title{
+	font-family: 'Open Sans Condensed', sans-serif;
+	font-size: 2.5rem;
+	color: rgb(203, 255, 17);
+}
+
 .HoneyComb{
 	background:
 	radial-gradient(circle farthest-side at 0% 50%,#fb1 23.5%,rgba(240,166,17,0) 0)21px 30px,

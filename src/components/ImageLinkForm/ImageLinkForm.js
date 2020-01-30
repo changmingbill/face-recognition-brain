@@ -5,7 +5,7 @@ const ImageLinkForm = ({inputChange, imageSubmit}) => {
 	return (
 		<Fragment>
 			<div>
-				<p className="f3">{'This Magic Brain will detect faces in your pictures. Give it a try'}</p>
+				<p id='title' className="f3">{'This Magic Brain will detect faces in your pictures. Give it a try'}</p>
 			</div>
 			<div className='center'>
 				<div className="pa4 br2 shadow-5 HoneyComb form center">

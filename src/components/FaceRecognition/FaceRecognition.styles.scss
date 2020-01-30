@@ -1,0 +1,17 @@
+.bounding-box {
+    position: absolute;
+    box-shadow: 0 0 0 3px #149df2 inset;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    
+
+    &:hover{
+        cursor: pointer;
+        box-shadow: 0 0 0 3px hsla(0, 0%, 80%, 0.3),
+        0 0 0 5px hsla(0, 92%, 43%, 0.89);
+        transform: rotate(20deg);
+    }
+}
+
+
