@@ -9,6 +9,8 @@ import Rank from './components/Rank/Rank';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Signin from './components/Signin/Signin.component';
 import Register from './components/Register/Register.component';
+import {connect} from 'react-redux';
+import {setCurrentUser} from './redux/user/user.action';
 
 // const app = new Clarifai.App({apiKey: ''});
 
@@ -51,14 +53,13 @@ class App extends Component{
   //   .then(console.log);
   // }
   loadUser = (data) => {
-    this.setState({
-      user : {
+
+    this.props.setCurrentUser({
         id: data.id,
         name: data.name,
         email: data.email,
         entries: data.entries,
         joined: data.joined
-      }
     })
   }
 
@@ -108,7 +109,7 @@ class App extends Component{
 
   onImageSubmit = () => {
 
-    this.setState({imageUrl: this.state.input});
+    this.setState((prevState, prevProps)=>{return {imageUrl: prevState.input}});
     // app.models
     // .predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
     fetch('https://dry-anchorage-94607.herokuapp.com/imageurl',{
@@ -130,25 +131,25 @@ class App extends Component{
          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          id: this.state.user.id
+          id: this.props.user.id
         })
           
         })
         .then(res=> res.json())
         .then(count => {
-          this.setState(Object.assign(this.state.user, {entries: count})); 
+          this.setState(Object.assign(this.props.user, {entries: count})); 
         })
         .catch((err)=>console.log);
       }
       this.displayFaceBox(this.calculateFaceLocation(response));
+      
     })
     .catch(error => console.log(error));
-
+    
   }
 
   render(){
     const {imageUrl, box, route, isSignIn} = this.state;
-    // console.log('box = ',box);
     return (
       <div className="App">
       <Particles className='particles' params={particleOptions}/>
@@ -156,8 +157,8 @@ class App extends Component{
       { route === 'home' ? 
          <Fragment>
             <Logo />
-            <Rank name={this.state.user.name} entries={this.state.user.entries}/>
-            <ImageLinkForm inputChange={this.onInputChange} imageSubmit={this.onImageSubmit}/>
+            <Rank name={this.props.user.name} entries={this.props.user.entries}/>
+            <ImageLinkForm inputChange={this.onInputChange} imageSubmit={this.onImageSubmit} value={this.state.input} />
             <FaceRecognition imageUrl={imageUrl} boxArr={box} />
           </Fragment>
         :(
@@ -170,6 +171,12 @@ class App extends Component{
     );
   }
 }
+const mapDispatchToProps = dispatch => ({
+  setCurrentUser: user => dispatch(setCurrentUser(user))//user means payload content pass to reducer
+});
 
-export default App;
+const mapStateToProps = (state) => ({
+  user: state.currentUser.user//state means rootReducer; currentUser means user.reducer
+})
+export default connect(mapStateToProps, mapDispatchToProps)(App);
 // https://samples.clarifai.com/face-det.jpg

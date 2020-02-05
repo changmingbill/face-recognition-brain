@@ -1,33 +1,22 @@
 import React, {Fragment, Component} from 'react';
+import {connect} from 'react-redux';
+import {setEmailField, setPasswordField} from '../../redux/sign-in/sign-in.action';
 
 
 class Signin extends Component {
 	constructor(props){
 		super(props);
-		this.state = {
-			signInEmail: '',
-			signInPassowrd: ''
-		}
-	}
-
-	onEmailChange = (event) =>{
-		this.setState({signInEmail:event.target.value});
-	}
-
-	onPasswordChange = (event) =>{
-		this.setState({signInPassowrd:event.target.value});
 	}
 
 	onSubmitSignin = () => {
-		
 		fetch('https://dry-anchorage-94607.herokuapp.com/signin',{
 			method: 'POST',
 			headers: {
    			 'Content-Type': 'application/json'
   			},
 			body: JSON.stringify({
-				email: this.state.signInEmail,
-				password: this.state.signInPassowrd
+				email: this.props.signInEmail,
+				password: this.props.signInPassword
 			})
 			
 		})
@@ -54,11 +43,11 @@ class Signin extends Component {
 				  <legend className="f1 fw6 ph0 mh0">Sign In</legend>
 				  <div className="mt3">
 				    <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
-				    <input onChange={this.onEmailChange} className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="email" name="email-address"  id="email-address"/>
+				    <input onChange={this.props.onEmailChange} className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="email" name="email-address"  id="email-address"/>
 				  </div>
 				  <div className="mv3">
 				    <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
-				    <input onChange={this.onPasswordChange} className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="password" name="password"  id="password"/>
+				    <input onChange={this.props.onPasswordChange} className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="password" name="password"  id="password"/>
 				  </div>
 				</fieldset>
 				<div className="">
@@ -81,5 +70,16 @@ class Signin extends Component {
 	}
 	
 }
-
-export default Signin;
+const mapDispatchToProps = dispatch => ({
+	onEmailChange: (event) => dispatch(setEmailField(event.target.value)),//user means payload content pass to reducer
+	onPasswordChange: (event) => dispatch(setPasswordField(event.target.value))
+  });
+  
+  const mapStateToProps = (state) => {
+	return{
+		signInEmail: state.emailInput.signInEmail,//state means rootReducer; emailInput means signInEmail.reducer
+		signInPassword: state.passwordInput.signInPassword
+  	}
+  }
+  
+export default connect(mapStateToProps, mapDispatchToProps)(Signin);
