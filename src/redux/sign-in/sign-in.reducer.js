@@ -1,9 +1,4 @@
-import {CHANGE_EMAIL_FIELD,
-    CHANGE_PASSWORD_FIELD,
-    REQUEST_ROBOTS_PENDING,
-    REQUEST_ROBOTS_SUCCESS,
-    REQUEST_ROBOTS_FAILED
-} from './constants.const';
+import {SignInActtionType} from './sign-in.type';
 
 const INITIAL_EMAIL_STATE = {
     signInEmail: ''
@@ -11,7 +6,7 @@ const INITIAL_EMAIL_STATE = {
 
 export const emailInput = (state=INITIAL_EMAIL_STATE, action={}) => {
     switch(action.type){
-        case CHANGE_EMAIL_FIELD:
+        case SignInActtionType.CHANGE_EMAIL_FIELD:
             return Object.assign({}, state, {signInEmail: action.payload});
             // return {...state, searchField: action.payload};
         default:
@@ -25,7 +20,7 @@ const INITIAL_PASSWORD_STATE = {
 
 export const passwordInput = (state=INITIAL_PASSWORD_STATE, action={}) => {
     switch(action.type){
-        case CHANGE_PASSWORD_FIELD:
+        case SignInActtionType.CHANGE_PASSWORD_FIELD:
             return Object.assign({}, state, {signInPassword: action.payload});
             // return {...state, searchField: action.payload};
         default:

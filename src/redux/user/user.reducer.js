@@ -1,3 +1,4 @@
+import {loadUser} from './user.utils';
 const INITIAL_STATE = {
       user : {
         id: '',
@@ -13,7 +14,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
         case 'SET_CURRENT_USER':
             return {
                 ...state,
-                user: action.payload
+                user: loadUser(action.payload)
             }
         default:
             return state;

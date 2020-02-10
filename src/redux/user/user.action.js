@@ -1,5 +1,5 @@
-export const setCurrentUser = user => ({
+export const setCurrentUser = data => ({
     type: 'SET_CURRENT_USER',
-    payload: user
+    payload: data
 });
 

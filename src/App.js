@@ -11,6 +11,8 @@ import Signin from './components/Signin/Signin.component';
 import Register from './components/Register/Register.component';
 import {connect} from 'react-redux';
 import {setCurrentUser} from './redux/user/user.action';
+import {createStructuredSelector} from 'reselect';
+import {loadSelectorUser} from './redux/user/user.selectors';
 
 // const app = new Clarifai.App({apiKey: ''});
 
@@ -52,16 +54,6 @@ class App extends Component{
   //   .then(response=> response.json())
   //   .then(console.log);
   // }
-  loadUser = (data) => {
-
-    this.props.setCurrentUser({
-        id: data.id,
-        name: data.name,
-        email: data.email,
-        entries: data.entries,
-        joined: data.joined
-    })
-  }
 
   calculateFaceLocation = (data) => {
     // const pos = data.outputs[0].data.regions[0].region_info.bounding_box;
@@ -163,8 +155,8 @@ class App extends Component{
           </Fragment>
         :(
           route === 'signin' ?
-          <Signin loadUser={this.loadUser} onRouteChange={this.onRouteChange}/> : 
-          <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
+          <Signin onRouteChange={this.onRouteChange}/> : 
+          <Register loadUser={this.props.loadUser} onRouteChange={this.onRouteChange}/>
         )
       }
       </div>
@@ -172,11 +164,11 @@ class App extends Component{
   }
 }
 const mapDispatchToProps = dispatch => ({
-  setCurrentUser: user => dispatch(setCurrentUser(user))//user means payload content pass to reducer
+  loadUser: data => dispatch(setCurrentUser(data))//user means payload content pass to reducer
 });
 
-const mapStateToProps = (state) => ({
-  user: state.currentUser.user//state means rootReducer; currentUser means user.reducer
+const mapStateToProps = createStructuredSelector({
+  user: loadSelectorUser//state means rootReducer; currentUser means user.reducer
 })
 export default connect(mapStateToProps, mapDispatchToProps)(App);
 // https://samples.clarifai.com/face-det.jpg

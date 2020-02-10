@@ -1,12 +1,10 @@
 import React, {Fragment, Component} from 'react';
 import {connect} from 'react-redux';
 import {setEmailField, setPasswordField} from '../../redux/sign-in/sign-in.action';
-
+import {setCurrentUser} from '../../redux/user/user.action';
 
 class Signin extends Component {
-	constructor(props){
-		super(props);
-	}
+	
 
 	onSubmitSignin = () => {
 		fetch('https://dry-anchorage-94607.herokuapp.com/signin',{
@@ -72,7 +70,8 @@ class Signin extends Component {
 }
 const mapDispatchToProps = dispatch => ({
 	onEmailChange: (event) => dispatch(setEmailField(event.target.value)),//user means payload content pass to reducer
-	onPasswordChange: (event) => dispatch(setPasswordField(event.target.value))
+	onPasswordChange: (event) => dispatch(setPasswordField(event.target.value)),
+	loadUser: data => dispatch(setCurrentUser(data))
   });
   
   const mapStateToProps = (state) => {
