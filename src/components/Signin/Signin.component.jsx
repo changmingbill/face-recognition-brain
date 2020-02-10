@@ -1,6 +1,6 @@
 import React, {Fragment, Component} from 'react';
 import {connect} from 'react-redux';
-import {setEmailField, setPasswordField} from '../../redux/sign-in/sign-in.action';
+import {setEmailField, setPasswordField} from '../../redux/sign-in-and-register/sign-in-and-register.action';
 import {setCurrentUser} from '../../redux/user/user.action';
 
 class Signin extends Component {
@@ -74,11 +74,11 @@ const mapDispatchToProps = dispatch => ({
 	loadUser: data => dispatch(setCurrentUser(data))
   });
   
-  const mapStateToProps = (state) => {
-	return{
-		signInEmail: state.emailInput.signInEmail,//state means rootReducer; emailInput means signInEmail.reducer
-		signInPassword: state.passwordInput.signInPassword
-  	}
-  }
+const mapStateToProps = (state) => {
+return{
+	signInEmail: state.emailInput.email,//state means rootReducer; emailInput means signInEmail.reducer
+	signInPassword: state.passwordInput.password
+}
+}
   
 export default connect(mapStateToProps, mapDispatchToProps)(Signin);

@@ -1,4 +1,7 @@
 import React, {Fragment, Component} from 'react';
+import {connect} from 'react-redux';
+import {setEmailField, setPasswordField, setNameField} from '../../redux/sign-in-and-register/sign-in-and-register.action';
+import {setCurrentUser} from '../../redux/user/user.action';
 
 class Register extends Component{
 	constructor(props){
@@ -32,9 +35,9 @@ class Register extends Component{
    			 'Content-Type': 'application/json'
   			},
 			body: JSON.stringify({
-				email: this.state.email,
-				password: this.state.passowrd,
-				name: this.state.name
+				email: this.props.email,
+				password: this.props.password,
+				name: this.props.name
 			})
 			
 		})
@@ -51,7 +54,7 @@ class Register extends Component{
 	}
 
 	render(){
-		// const {onRouteChange} = this.props;
+		const {onEmailChange, onPasswordChange, onNameChange} = this.props;
 		return (
 		<Fragment>	
 			<div className="br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l shadow-5 mw6 center">
@@ -61,15 +64,15 @@ class Register extends Component{
 				  <legend className="f1 fw6 ph0 mh0">Register</legend>
 				  <div className="mt3">
 				    <label className="db fw6 lh-copy f6" htmlFor="name">Name</label>
-				    <input onChange={this.onNameChange} className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="text" name="name"  id="name"/>
+				    <input onChange={onNameChange} className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="text" name="name"  id="name"/>
 				  </div>
 				  <div className="mt3">
 				    <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
-				    <input onChange={this.onEmailChange} className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="email" name="email-address"  id="email-address"/>
+				    <input onChange={onEmailChange} className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="email" name="email-address"  id="email-address"/>
 				  </div>
 				  <div className="mv3">
 				    <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
-				    <input onChange={this.onPasswordChange} className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="password" name="password"  id="password"/>
+				    <input onChange={onPasswordChange} className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="password" name="password"  id="password"/>
 				  </div>
 				</fieldset>
 				<div className="">
@@ -91,4 +94,19 @@ class Register extends Component{
 	
 }
 
-export default Register;
+const mapDispatchToProps = dispatch => ({
+	onEmailChange: (event) => dispatch(setEmailField(event.target.value)),//user means payload content pass to reducer
+	onPasswordChange: (event) => dispatch(setPasswordField(event.target.value)),
+	onNameChange: (event) => dispatch(setNameField(event.target.value)),
+	loadUser: data => dispatch(setCurrentUser(data))
+  });
+  
+const mapStateToProps = (state) => {
+return{
+	email: state.emailInput.email,//state means rootReducer; emailInput means signInEmail.reducer
+	password: state.passwordInput.password,
+	name: state.nameInput.name
+}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

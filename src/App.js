@@ -156,7 +156,7 @@ class App extends Component{
         :(
           route === 'signin' ?
           <Signin onRouteChange={this.onRouteChange}/> : 
-          <Register loadUser={this.props.loadUser} onRouteChange={this.onRouteChange}/>
+          <Register onRouteChange={this.onRouteChange}/>
         )
       }
       </div>
