@@ -10,9 +10,10 @@ import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Signin from './components/Signin/Signin.component';
 import Register from './components/Register/Register.component';
 import {connect} from 'react-redux';
-import {setCurrentUser} from './redux/user/user.action';
+import {resetCurrentUser} from './redux/user/user.action';
 import {createStructuredSelector} from 'reselect';
-import {loadSelectorUser} from './redux/user/user.selectors';
+
+import {selectUser} from './redux/user/user.selector';
 
 // const app = new Clarifai.App({apiKey: ''});
 
@@ -34,13 +35,6 @@ const initialState = {
       box: [],
       route: 'signin', 
       isSignIn: false,
-      user : {
-        id: '',
-        name: '',
-        email: '',
-        entries: 0,
-        joined: ''
-      }
 }
 
 class App extends Component{
@@ -49,11 +43,6 @@ class App extends Component{
     this.state = initialState;
   }
 
-  // componentDidMount(){
-  //   fetch('http://localhost:3000/')
-  //   .then(response=> response.json())
-  //   .then(console.log);
-  // }
 
   calculateFaceLocation = (data) => {
     // const pos = data.outputs[0].data.regions[0].region_info.bounding_box;
@@ -90,18 +79,20 @@ class App extends Component{
     this.setState({input: event.target.value});
   }
 
-  onRouteChange = (route) => {
-    if (route === 'home'){
+  onRouteChange = (routeName) => {
+    if (routeName === 'home'){
       this.setState({isSignIn: true});
     }else{
+      
        this.setState(initialState);
+       this.props.resetUser();
     }
-    this.setState({route: route});
+    this.setState({route: routeName});
   }
 
   onImageSubmit = () => {
 
-    this.setState((prevState, prevProps)=>{return {imageUrl: prevState.input}});
+    this.setState((prevState, prevProps)=> ({imageUrl: prevState.input}));
     // app.models
     // .predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
     fetch('https://dry-anchorage-94607.herokuapp.com/imageurl',{
@@ -164,11 +155,11 @@ class App extends Component{
   }
 }
 const mapDispatchToProps = dispatch => ({
-  loadUser: data => dispatch(setCurrentUser(data))//user means payload content pass to reducer
+  resetUser: ()=>dispatch(resetCurrentUser())//user means payload content pass to reducer
 });
 
 const mapStateToProps = createStructuredSelector({
-  user: loadSelectorUser//state means rootReducer; currentUser means user.reducer
+  user: selectUser//state means rootReducer; currentUser means user.reducer
 })
 export default connect(mapStateToProps, mapDispatchToProps)(App);
 // https://samples.clarifai.com/face-det.jpg

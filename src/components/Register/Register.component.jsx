@@ -1,60 +1,21 @@
 import React, {Fragment, Component} from 'react';
 import {connect} from 'react-redux';
 import {setEmailField, setPasswordField, setNameField} from '../../redux/sign-in-and-register/sign-in-and-register.action';
-import {setCurrentUser} from '../../redux/user/user.action';
+import {signInRequestSuccess,registerRequestStartAsync} from '../../redux/user/user.action';
+import {createStructuredSelector} from 'reselect';
+import {selectEmailInput, selectPasswordInput, selectNameInput} from '../../redux/sign-in-and-register/sign-in-and-register.selector';
+import {selectUser} from '../../redux/user/user.selector';
 
 class Register extends Component{
-	constructor(props){
-		super(props);
-		this.state = {
-			email: '',
-			passowrd: '',
-			name: ''
+	
+	componentDidUpdate(){
+		if (this.props.user){
+			this.props.onRouteChange('home');
 		}
 	}
 
-	onNameChange = (event) =>{
-		this.setState({name:event.target.value});
-		
-	}
-
-	onEmailChange = (event) =>{
-		this.setState({email:event.target.value});
-		
-	}
-
-	onPasswordChange = (event) =>{
-		this.setState({passowrd:event.target.value});
-		// console.log(event.target.value);
-	}
-
-	onSubmitRegister = () =>{
-		fetch('https://dry-anchorage-94607.herokuapp.com/register',{
-			method: 'POST',
-			headers: {
-   			 'Content-Type': 'application/json'
-  			},
-			body: JSON.stringify({
-				email: this.props.email,
-				password: this.props.password,
-				name: this.props.name
-			})
-			
-		})
-		.then(reponse=> reponse.json())
-		.then(user => {
-			if (user.id){
-				this.props.loadUser(user);
-				this.props.onRouteChange('home');
-			}
-		})
-		.catch((err)=>console.log);
-		
-
-	}
-
 	render(){
-		const {onEmailChange, onPasswordChange, onNameChange} = this.props;
+		const {onEmailChange, onPasswordChange, onNameChange,registerRequestStartAsync, email,password,name} = this.props;
 		return (
 		<Fragment>	
 			<div className="br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l shadow-5 mw6 center">
@@ -77,7 +38,7 @@ class Register extends Component{
 				</fieldset>
 				<div className="">
 				  <input 
-				  	  onClick={this.onSubmitRegister}
+				  	  onClick={()=>registerRequestStartAsync(email,password,name)}
 					  className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" 
 					  type="submit" 
 					  value="Register"
@@ -98,15 +59,17 @@ const mapDispatchToProps = dispatch => ({
 	onEmailChange: (event) => dispatch(setEmailField(event.target.value)),//user means payload content pass to reducer
 	onPasswordChange: (event) => dispatch(setPasswordField(event.target.value)),
 	onNameChange: (event) => dispatch(setNameField(event.target.value)),
-	loadUser: data => dispatch(setCurrentUser(data))
+	loadUser: user => dispatch(signInRequestSuccess(user)),
+	registerRequestStartAsync:(email,password,name) => dispatch(registerRequestStartAsync(email,password,name))
   });
   
-const mapStateToProps = (state) => {
-return{
-	email: state.emailInput.email,//state means rootReducer; emailInput means signInEmail.reducer
-	password: state.passwordInput.password,
-	name: state.nameInput.name
-}
-}
+const mapStateToProps = createStructuredSelector(
+	{
+		email: selectEmailInput,//state means rootReducer; emailInput means signInEmail.reducer
+		password: selectPasswordInput,
+		name:selectNameInput,
+		user:selectUser
+	}
+);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Register);

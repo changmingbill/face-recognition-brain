@@ -1,20 +1,30 @@
 import {loadUser} from './user.utils';
+import {userActionType} from './user.type';
 const INITIAL_STATE = {
-      user : {
-        id: '',
-        name: '',
-        email: '',
-        entries: 0,
-        joined: ''
-      }
+    user:null,
+    errorMessage: undefined
 }
 
 const userReducer = (state = INITIAL_STATE, action) => {
     switch(action.type){
-        case 'SET_CURRENT_USER':
+        case userActionType.RESET_CURRENT_USER:
             return {
                 ...state,
-                user: loadUser(action.payload)
+                user: null
+            }
+        case userActionType.REQUEST_USER_PENDING:
+            return {
+                ...state
+            }
+        case userActionType.REQUEST_USER_SUCCESS:
+            return {
+                ...state,
+                user:loadUser(action.payload)
+            }
+        case userActionType.REQUEST_USER_FAILED:
+            return {
+                ...state,
+                errorMessage: action.payload
             }
         default:
             return state;
@@ -22,3 +32,4 @@ const userReducer = (state = INITIAL_STATE, action) => {
 }
 
 export default userReducer;
+
