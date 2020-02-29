@@ -19,7 +19,7 @@ class Register extends Component{
 		return (
 		<Fragment>	
 			<div className="br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l shadow-5 mw6 center">
-			<main className="pa4 black-80">
+			<main className="pa4 black-80 upper-z-index">
 				<div className="measure">
 				<fieldset id="sign_up" className="ba b--transparent ph0 mh0">
 				  <legend className="f1 fw6 ph0 mh0">Register</legend>

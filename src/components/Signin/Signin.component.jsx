@@ -9,7 +9,7 @@ import {selectUser} from '../../redux/user/user.selector';
 class Signin extends React.Component  {
 
 	componentDidUpdate(){
-		console.log(this.props.user);
+		
 		if (this.props.user){
 			this.props.onRouteChange('home');
 		}
@@ -18,8 +18,8 @@ class Signin extends React.Component  {
 	const {onEmailChange,onPasswordChange,signInEmail,signInPassword,onRouteChange,signInRequestStartAsync} = this.props;
 	return (
 		<Fragment>	
-			<div className="br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l shadow-5 mw6 center">
-			<main className="pa4 black-80">
+			<div className="br3 ba dark-gray b--black-10 mv4 w-50-m w-25-l shadow-5 mw6 center">
+			<main className="pa4 black-80 upper-z-index">
 				<div className="measure">
 				<fieldset id="sign_up" className="ba b--transparent ph0 mh0">
 					<legend className="f1 fw6 ph0 mh0">Sign In</legend>
@@ -41,7 +41,7 @@ class Signin extends React.Component  {
 					/>
 				</div>
 				<div className="lh-copy mt3">
-					<p onClick={() => onRouteChange('register')} href="#0" className="f6 link dim black db pointer">Register</p>
+					<p onClick={() => onRouteChange('register')} href="#0" className="f6 link dim black db pointer ">Register</p>
 				</div>
 				</div>
 			</main>
@@ -56,6 +56,7 @@ const mapDispatchToProps = dispatch => ({
 	onEmailChange: (event) => dispatch(setEmailField(event.target.value)),//user means payload content pass to reducer
 	onPasswordChange: (event) => dispatch(setPasswordField(event.target.value)),
 	signInRequestStartAsync: (email,password) => dispatch(signInRequestStartAsync(email,password))
+	
   });
   
 const mapStateToProps = createStructuredSelector(

@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from 'react';
-import './App.css';
-import Particles from 'react-particles-js';
+import './App.scss';
+import ParticleConponent from './components/particle-conponent/particle.component';
 // import Clarifai from 'clarifai';
 import Navigation from './components/Navigation/Navigation';
 import Logo from './components/Logo/Logo';
@@ -10,31 +10,18 @@ import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Signin from './components/Signin/Signin.component';
 import Register from './components/Register/Register.component';
 import {connect} from 'react-redux';
-import {resetCurrentUser} from './redux/user/user.action';
+import {resetCurrentUser,routeChange} from './redux/user/user.action';
 import {createStructuredSelector} from 'reselect';
 
-import {selectUser} from './redux/user/user.selector';
+import {selectUser, selectIsSignIn, selectRoute} from './redux/user/user.selector';
 
 // const app = new Clarifai.App({apiKey: ''});
 
-const particleOptions = {
-  particles: {
-    number: {
-      value: 80,
-      density: {
-        enable: true,
-        value_area: 700
-      }
-    }
-    
-  }
-};
+
 const initialState = {
       input:"",
       imageUrl: "",
-      box: [],
-      route: 'signin', 
-      isSignIn: false,
+      box: []
 }
 
 class App extends Component{
@@ -81,7 +68,7 @@ class App extends Component{
 
   onRouteChange = (routeName) => {
     if (routeName === 'home'){
-      this.setState({isSignIn: true});
+      // this.setState({isSignIn: true});
     }else{
       
        this.setState(initialState);
@@ -132,34 +119,43 @@ class App extends Component{
   }
 
   render(){
-    const {imageUrl, box, route, isSignIn} = this.state;
+    const {imageUrl, box} = this.state;
+    const {isSignIn, route, onRouteChange} = this.props;
     return (
+      <Fragment>
+      
       <div className="App">
-      <Particles className='particles' params={particleOptions}/>
-        <Navigation onRouteChange={this.onRouteChange} isSignIn={isSignIn}/>
+      <ParticleConponent/>
+      <Navigation  onRouteChange={onRouteChange} isSignIn={isSignIn}/>
       { route === 'home' ? 
-         <Fragment>
-            <Logo />
-            <Rank name={this.props.user.name} entries={this.props.user.entries}/>
-            <ImageLinkForm inputChange={this.onInputChange} imageSubmit={this.onImageSubmit} value={this.state.input} />
-            <FaceRecognition imageUrl={imageUrl} boxArr={box} />
-          </Fragment>
-        :(
-          route === 'signin' ?
-          <Signin onRouteChange={this.onRouteChange}/> : 
-          <Register onRouteChange={this.onRouteChange}/>
-        )
-      }
+          <Fragment>
+              <Logo />
+              <Rank name={this.props.user.name} entries={this.props.user.entries}/>
+              <ImageLinkForm inputChange={this.onInputChange} imageSubmit={this.onImageSubmit} value={this.state.input} />
+              <FaceRecognition imageUrl={imageUrl} boxArr={box} />
+            </Fragment>
+          :(
+            route === 'signin' ?
+            <Signin onRouteChange={onRouteChange}/> : 
+            <Register onRouteChange={onRouteChange}/>
+          )
+        }
+          
       </div>
+      </Fragment>
+      
     );
   }
 }
 const mapDispatchToProps = dispatch => ({
-  resetUser: ()=>dispatch(resetCurrentUser())//user means payload content pass to reducer
+  resetUser: ()=>dispatch(resetCurrentUser()),//user means payload content pass to reducer
+  onRouteChange: (routeName) => dispatch(routeChange(routeName))
 });
 
 const mapStateToProps = createStructuredSelector({
-  user: selectUser//state means rootReducer; currentUser means user.reducer
+  user: selectUser,//state means rootReducer; currentUser means user.reducer
+  isSignIn:selectIsSignIn,
+  route:selectRoute
 })
 export default connect(mapStateToProps, mapDispatchToProps)(App);
 // https://samples.clarifai.com/face-det.jpg

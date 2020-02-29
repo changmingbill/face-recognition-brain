@@ -15,5 +15,9 @@ export const setNameField = (text) => ({
 	payload: text
 });
 
+export const resetInputField = () => ({
+	type: SignInActtionType.RESET_INPUT_FIELD,
+});
+
 
 

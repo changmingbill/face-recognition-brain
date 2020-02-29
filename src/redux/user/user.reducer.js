@@ -1,16 +1,24 @@
-import {loadUser} from './user.utils';
+import {loadUser,singInStatus,userStatus} from './user.utils';
 import {userActionType} from './user.type';
 const INITIAL_STATE = {
     user:null,
-    errorMessage: undefined
+    errorMessage: undefined,
+    route: 'signin', 
+    isSignIn: false
 }
 
 const userReducer = (state = INITIAL_STATE, action) => {
     switch(action.type){
-        case userActionType.RESET_CURRENT_USER:
+        case userActionType.ROUTE_CHANGE:
             return {
                 ...state,
-                user: null
+                route:action.payload,
+                isSignIn:singInStatus(action.payload),
+                user:userStatus(action.payload)
+            }
+        case userActionType.RESET_CURRENT_USER:
+            return {
+                ...INITIAL_STATE,
             }
         case userActionType.REQUEST_USER_PENDING:
             return {
@@ -19,7 +27,9 @@ const userReducer = (state = INITIAL_STATE, action) => {
         case userActionType.REQUEST_USER_SUCCESS:
             return {
                 ...state,
-                user:loadUser(action.payload)
+                user:loadUser(action.payload),
+                isSignIn: true,
+                route: 'home'
             }
         case userActionType.REQUEST_USER_FAILED:
             return {

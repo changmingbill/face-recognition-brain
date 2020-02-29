@@ -9,6 +9,11 @@ export const signInRequestPending = () => ({
 	
 });
 
+export const routeChange = (routeName) => ({
+	type:userActionType.ROUTE_CHANGE,
+	payload:routeName
+});
+
 export const signInRequestSuccess = (user) => ({
 	type:userActionType.REQUEST_USER_SUCCESS,
 	payload:user
@@ -18,6 +23,10 @@ export const signInRequestFailure = (errorMessage) => ({
 	type:userActionType.REQUEST_USER_SUCCESS,
 	payload:errorMessage
 });
+
+export const onRouteChage = (routeName) => (dispatch) => {
+	dispatch(routeChange(routeName));
+}
 
 export const signInRequestStartAsync = (email,password) => (dispatch) => {
 	if (email==='' || password ===''){return};

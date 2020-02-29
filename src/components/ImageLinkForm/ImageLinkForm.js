@@ -9,7 +9,7 @@ const ImageLinkForm = ({inputChange, imageSubmit, value}) => {
 				<p id='title' className="f3">{'This Magic Brain will detect faces in your pictures. Give it a try'}</p>
 			</div>
 			<div className='center'>
-				<div className="pa4 br2 shadow-5 HoneyComb form center">
+				<div className="pa4 br2 shadow-5 HoneyComb form center upper-z-index">
 					<input id='myInput' className='f4 w-two-thirds pa2 br2' 
 					onChange={inputChange} 
 					type='text' 

@@ -17,6 +17,8 @@ const dataInput = (state=INITIAL_STATE, action={}) => {
             // return {...state, searchField: action.payload};
         case SignInActtionType.CHANGE_NAME_FIELD:
             return Object.assign({}, state, {name: action.payload});
+        case SignInActtionType.RESET_INPUT_FIELD:
+            return INITIAL_STATE;
         default:
             return state;
     }
