@@ -20,7 +20,7 @@ export const signInRequestSuccess = (user) => ({
 });
 
 export const signInRequestFailure = (errorMessage) => ({
-	type:userActionType.REQUEST_USER_SUCCESS,
+	type:userActionType.REQUEST_USER_FAILED,
 	payload:errorMessage
 });
 
