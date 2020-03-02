@@ -24,12 +24,11 @@ const clarifaiReducer = (state=INITIAL_STATE, action) => {
                 ...state,
                 clarifaiError:action.payload
             }
-        case clarifaiActionType.UPDATE_USER_COUNT:
+        case clarifaiActionType.RESET_CLARIFAI:
             return {
-                ...state,
-                count:action.payload
+                ...INITIAL_STATE,
             }
-        case clarifaiActionType.UPDATE_USER_FAILED:
+        case clarifaiActionType.UPDATE_USER_COUNT_FAILED:
             return {
                 ...state,
                 updateError:action.payload

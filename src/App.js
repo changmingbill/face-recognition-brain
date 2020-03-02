@@ -10,7 +10,7 @@ import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Signin from './components/Signin/Signin.component';
 import Register from './components/Register/Register.component';
 import {connect} from 'react-redux';
-import {resetCurrentUser,routeChange} from './redux/user/user.action';
+import {onRouteChange} from './redux/user/user.action';
 import {createStructuredSelector} from 'reselect';
 import {selectClarifaiBox,selectClarifaiCount,selectClarifaiImageUrl} from './redux/clarifai/clarifai.selector';
 import {selectUser, selectIsSignIn, selectRoute} from './redux/user/user.selector';
@@ -31,7 +31,7 @@ class App extends Component{
 
   render(){
     const {input} = this.state;
-    const {isSignIn, route, onRouteChange,fetchClarifai,user,clarifaiCount,clarifaiBox,imageUrl} = this.props;
+    const {isSignIn, route, onRouteChange,fetchClarifai,user,clarifaiBox,imageUrl} = this.props;
     return (
       <Fragment>
       
@@ -41,7 +41,7 @@ class App extends Component{
       { route === 'home' ? 
           <Fragment>
               <Logo />
-              <Rank name={this.props.user.name} entries={clarifaiCount > 0 ?clarifaiCount : this.props.user.entries}/>
+              <Rank name={user.name} entries={user.entries}/>
               <ImageLinkForm inputChange={this.onInputChange} imageSubmit={()=>fetchClarifai(input,user.id)} value={input} />
               <FaceRecognition imageUrl={imageUrl} boxArr={clarifaiBox} />
             </Fragment>
@@ -59,9 +59,8 @@ class App extends Component{
   }
 }
 const mapDispatchToProps = dispatch => ({
-  resetUser: ()=>dispatch(resetCurrentUser()),//user means payload content pass to reducer
-  onRouteChange: (routeName) => dispatch(routeChange(routeName)),
-  fetchClarifai:(input,userId)=>dispatch(fetchClarifaiStartAsync(input,userId))
+  fetchClarifai:(input,userId)=>dispatch(fetchClarifaiStartAsync(input,userId)),
+  onRouteChange:(route)=>dispatch(onRouteChange(route))
 });
 
 const mapStateToProps = createStructuredSelector({

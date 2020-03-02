@@ -1,3 +1,12 @@
+@keyframes framesRotate{
+    0%{ transform:rotate(30deg)}
+    20%{ transform:rotate(10deg)}
+    40%{ transform:scale(1.2);}
+    60%{ transform:rotate(-10deg)}
+    80%{ transform:rotate(-30deg)}
+    100%{ transform:scale(1.2);}
+  };
+
 .bounding-box {
     position: absolute;
     box-shadow: 0 0 0 3px #149df2 inset;
@@ -10,7 +19,10 @@
         cursor: pointer;
         box-shadow: 0 0 0 3px hsla(0, 0%, 80%, 0.3),
         0 0 0 5px hsla(0, 92%, 43%, 0.89);
-        transform: rotate(20deg);
+        // transform: rotate(20deg);
+        transform: scale(1.2);
+        // transform:translateY(-5px);
+        animation: framesRotate 1.0s;
     }
 }
 

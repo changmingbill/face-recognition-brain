@@ -1,4 +1,5 @@
 import clarifaiActionType from './clarifai.type';
+import {updateUserCount} from '../user/user.action';
 
 export const fetchClarifaiStart = () => ({
     type: clarifaiActionType.FETCH_CLARIFAI_START
@@ -14,13 +15,14 @@ export const fetchClarifaiFailure = (error) => ({
     payload:error
 });
 
-export const updateUserCount = (count) => ({
-    type:clarifaiActionType.UPDATE_USER_COUNT,
-    payload:count
+export const resetClarifai = () => ({
+  type: clarifaiActionType.RESET_CLARIFAI,
+  
 });
 
-export const updateUserFailure = (err) => ({
-    type:clarifaiActionType.UPDATE_USER_FAILED,
+
+export const updateUserCountFailure = (err) => ({
+    type:clarifaiActionType.UPDATE_USER_COUNT_FAILED,
     payload:err
 });
 
@@ -58,9 +60,9 @@ export const fetchClarifaiStartAsync = (input,userId) => (dispatch) => {
         .then(count => 
           dispatch(updateUserCount(count))
         )
-        .catch((err)=>dispatch(updateUserFailure(err)))
+        .catch((err)=>dispatch(updateUserCountFailure(err)))
       }
-    //   this.displayFaceBox(this.calculateFaceLocation(response));
+   
         dispatch(fetchClarifaiSuccess(response));
       
     })

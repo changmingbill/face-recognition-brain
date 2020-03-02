@@ -1,9 +1,5 @@
 import {userActionType} from './user.type';
-
-export const resetCurrentUser = () => ({
-    type: userActionType.RESET_CURRENT_USER
-});
-
+import {resetClarifai} from '../clarifai/clarifai.action';
 export const signInRequestPending = () => ({
 	type:userActionType.REQUEST_USER_PENDING
 	
@@ -24,9 +20,18 @@ export const signInRequestFailure = (errorMessage) => ({
 	payload:errorMessage
 });
 
-export const onRouteChage = (routeName) => (dispatch) => {
+export const updateUserCount = (count) => ({
+    type:userActionType.UPDATE_USER_COUNT,
+    payload:count
+});
+
+export const onRouteChange = (routeName) => (dispatch) => {
 	dispatch(routeChange(routeName));
-}
+	if (routeName === 'signin'){dispatch(resetClarifai())};
+	
+};
+
+
 
 export const signInRequestStartAsync = (email,password) => (dispatch) => {
 	if (email==='' || password ===''){return};

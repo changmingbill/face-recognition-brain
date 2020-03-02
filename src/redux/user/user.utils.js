@@ -1,3 +1,4 @@
+
 export const loadUser = (data) => ({
         id: data.id,
         name: data.name,
@@ -6,7 +7,7 @@ export const loadUser = (data) => ({
         joined: data.joined
 });
 
-export const singInStatus = (routeName) => {
+export const singInStatus = (routeName) =>{
         switch (routeName){
           case 'home':
                 return true;

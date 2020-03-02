@@ -16,10 +16,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 isSignIn:singInStatus(action.payload),
                 user:userStatus(action.payload)
             }
-        case userActionType.RESET_CURRENT_USER:
-            return {
-                ...INITIAL_STATE,
-            }
+        
         case userActionType.REQUEST_USER_PENDING:
             return {
                 ...state
@@ -35,6 +32,11 @@ const userReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 errorMessage: action.payload
+            }
+        case userActionType.UPDATE_USER_COUNT:
+            return {
+                ...state,
+                user: {...state.user,entries:action.payload}
             }
         default:
             return state;
